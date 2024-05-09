@@ -1,4 +1,4 @@
-export const userTypes = `#graphql
+export default /* GraphQL */ `
   type Query {
     profile: User!
     publicProfile(username: String!): User

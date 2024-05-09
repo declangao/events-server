@@ -1,9 +1,14 @@
+import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeResolvers } from '@graphql-tools/merge';
-import { sharedResolvers } from './shared';
 
 export type ResolverContext = {
   req?: Request;
   res?: Response;
 };
 
-export const resolvers = mergeResolvers([sharedResolvers]);
+const resolversArray = loadFilesSync(import.meta.dirname, {
+  ignoreIndex: true,
+  extensions: ['ts'],
+});
+
+export const resolvers = mergeResolvers(resolversArray);

@@ -1,9 +1,13 @@
 import { DateTimeResolver } from 'graphql-scalars';
+import { QueryResolvers, Resolvers } from '../generated/graphql.js';
 
-export const sharedResolvers = {
+const test: QueryResolvers['test'] = () => 'hello';
+
+const resolvers: Resolvers = {
   DateTime: DateTimeResolver,
-
   Query: {
-    test: () => 'Hello World!',
+    test,
   },
 };
+
+export default resolvers;

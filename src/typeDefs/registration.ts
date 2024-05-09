@@ -1,4 +1,4 @@
-export const registrationTypes = `#graphql
+export default /* GraphQL */ `
   type Query {
     registrations: [Registration!]!
     registration(input: RegistrationIdsInput): Registration!
@@ -13,7 +13,7 @@ export const registrationTypes = `#graphql
     event: Event!
     user: User!
   }
-  
+
   input RegistrationIdsInput {
     eventId: String!
     userId: String!

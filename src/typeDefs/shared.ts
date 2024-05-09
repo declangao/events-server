@@ -1,4 +1,4 @@
-export const sharedTypes = `#graphql
+export default /* GraphQL */ `
   scalar DateTime
 
   type Query {

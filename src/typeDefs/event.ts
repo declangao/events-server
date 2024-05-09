@@ -1,4 +1,4 @@
-export const eventTypes = `#graphql
+export default /* GraphQL */ `
   type Query {
     allEvents: [Event]
     eventById(id: String!): Event
