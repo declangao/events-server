@@ -10,6 +10,8 @@ datasource db {
 generator json {
   provider = "prisma-json-types-generator"
   // namespace = "PrismaJson"
+  // clientOutput = "<finds it automatically>"
+  // (./ -> relative to schema, or an importable path to require() it)
 }
 
 model Event {
@@ -22,8 +24,8 @@ model Event {
   location    String
   datetime    DateTime
 
-  /// [Image]
-  images Json[]
+  /// [Images]
+  images Json[] @default([])
 
   creatorId     String
   creator       User           @relation(fields: [creatorId], references: [id], onDelete: Cascade)
@@ -40,7 +42,7 @@ model User {
   about    String?
 
   /// [Image]
-  images Json
+  image Json?
 
   events        Event[]
   registrations Registration[]

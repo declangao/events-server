@@ -19,8 +19,9 @@ export default /* GraphQL */ `
     images: [Image!]!
     createdAt: DateTime!
     updatedAt: DateTime!
-    creator: User!
-    attendees: [User!]!
+    creatorId: String!
+    creator: User
+    # attendees: [User!]!
   }
 
   input CreateEventInput {

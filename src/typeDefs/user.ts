@@ -14,17 +14,17 @@ export default /* GraphQL */ `
     id: ID!
     email: String
     username: String
-    images: [Image!]!
+    images: [Image]
     about: String
     createdAt: DateTime!
     updatedAt: DateTime!
-    createdEvents: [Event!]!
+    # createdEvents: [Event!]!
   }
 
   input UpdateUserInput {
     username: String!
     name: String!
-    images: [ImageInput!]!
+    images: [ImageInput]
     about: String
   }
 

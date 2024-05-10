@@ -15,7 +15,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  DateTime: { input: any; output: any; }
+  DateTime: { input: Date; output: Date; }
 };
 
 export type CreateEventInput = {
@@ -33,9 +33,9 @@ export type CreateUserResponse = {
 };
 
 export type Event = {
-  attendees: Array<User>;
   createdAt: Scalars['DateTime']['output'];
-  creator: User;
+  creator?: Maybe<User>;
+  creatorId: Scalars['String']['output'];
   datetime: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['ID']['output'];
@@ -96,7 +96,6 @@ export type MutationUpdateUserArgs = {
 };
 
 export type Query = {
-  aasassd?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   allEvents?: Maybe<Array<Maybe<Event>>>;
   allUsers: Array<User>;
   eventById?: Maybe<Event>;
@@ -143,7 +142,7 @@ export type UpdateEventInput = {
 
 export type UpdateUserInput = {
   about?: InputMaybe<Scalars['String']['input']>;
-  images: Array<ImageInput>;
+  images?: InputMaybe<Array<InputMaybe<ImageInput>>>;
   name: Scalars['String']['input'];
   username: Scalars['String']['input'];
 };
@@ -151,10 +150,9 @@ export type UpdateUserInput = {
 export type User = {
   about?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
-  createdEvents: Array<Event>;
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  images: Array<Image>;
+  images?: Maybe<Array<Maybe<Image>>>;
   updatedAt: Scalars['DateTime']['output'];
   username?: Maybe<Scalars['String']['output']>;
 };
@@ -280,9 +278,9 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 }
 
 export type EventResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Event'] = ResolversParentTypes['Event']> = {
-  attendees?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  creator?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  creator?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  creatorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   datetime?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -310,7 +308,6 @@ export type MutationResolvers<ContextType = ResolverContext, ParentType extends 
 };
 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  aasassd?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   allEvents?: Resolver<Maybe<Array<Maybe<ResolversTypes['Event']>>>, ParentType, ContextType>;
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   eventById?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<QueryEventByIdArgs, 'id'>>;
@@ -330,10 +327,9 @@ export type RegistrationResolvers<ContextType = ResolverContext, ParentType exte
 export type UserResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   about?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  createdEvents?: Resolver<Array<ResolversTypes['Event']>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  images?: Resolver<Maybe<Array<Maybe<ResolversTypes['Image']>>>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

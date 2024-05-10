@@ -20,6 +20,9 @@ const config: CodegenConfig = {
       config: {
         skipTypename: true,
         contextType: '../resolvers/index.js#ResolverContext',
+        scalars: {
+          DateTime: 'Date',
+        },
       },
     },
   },
