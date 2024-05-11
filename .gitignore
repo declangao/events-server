@@ -19,3 +19,4 @@ yarn-error.log*
 
 # Keep environment variables out of version control
 .env
+firebase-service-account-key.json

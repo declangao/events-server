@@ -1,3 +1,4 @@
+import { authCheckExpress } from '@/middlewares/auth.js';
 import { HttpError } from '@/utils/error.js';
 import { v2 as cloudinary } from 'cloudinary';
 import { NextFunction, Request, Response, Router } from 'express';
@@ -7,6 +8,7 @@ const router = Router();
 // Upload image to cloudinary
 router.post(
   '/upload',
+  authCheckExpress,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await cloudinary.uploader.upload(req.body.image);
@@ -23,6 +25,7 @@ router.post(
 // Delete image from cloudinary
 router.post(
   '/remove',
+  authCheckExpress,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await cloudinary.uploader.destroy(req.body.public_id);
