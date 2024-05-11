@@ -3,6 +3,7 @@ import {
   QueryResolvers,
   Resolvers,
 } from '@/generated/graphql.js';
+import { authCheck } from '@/middlewares/auth.js';
 import { prisma } from '@/utils/db.js';
 
 const allEvents: QueryResolvers['allEvents'] = async () => {
@@ -23,12 +24,25 @@ const eventById: QueryResolvers['eventById'] = async (_parent, { id }) => {
 
 const createEvent: MutationResolvers['createEvent'] = async (
   _parent,
-  { input }
+  { input },
+  { req }
 ) => {
+  const token = await authCheck(req);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: token.email,
+    },
+  });
+
+  if (!user) {
+    throw new Error('Unauthorized');
+  }
+
   const event = await prisma.event.create({
     data: {
       ...input,
-      creatorId: 'xxx',
+      creatorId: user.id,
       // creator: {
       //   connect: {
       //     id: 'xxx',
