@@ -14,7 +14,7 @@ export default /* GraphQL */ `
     id: ID!
     email: String
     username: String
-    images: [Image]
+    image: Image
     about: String
     createdAt: DateTime!
     updatedAt: DateTime!

@@ -5,7 +5,7 @@ import {
 } from '@/generated/graphql.js';
 import { authCheck } from '@/middlewares/auth.js';
 import { prisma } from '@/utils/db.js';
-import { nanoid } from 'nanoid';
+import { uid } from 'uid';
 
 const allUsers: QueryResolvers['allUsers'] = async () => {
   const users = await prisma.user.findMany();
@@ -32,7 +32,7 @@ const createUser: MutationResolvers['createUser'] = async (
   const newUser = await prisma.user.create({
     data: {
       email: token.email!,
-      username: nanoid(10),
+      username: uid(),
     },
   });
   return newUser;

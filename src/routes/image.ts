@@ -28,7 +28,7 @@ router.post(
   authCheckExpress,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await cloudinary.uploader.destroy(req.body.public_id);
+      const result = await cloudinary.uploader.destroy(req.body.publicId);
       res.json({ result });
     } catch (error) {
       console.log((error as Error).message);
