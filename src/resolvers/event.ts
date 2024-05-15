@@ -75,7 +75,7 @@ const updateEvent: MutationResolvers['updateEvent'] = async (
       creatorId: user.id,
     },
   });
-  if (!event) throw new Error('Unauthorized');
+  if (!event) throw new Error('Event not found');
 
   const updatedEvent = await prisma.event.update({
     where: {

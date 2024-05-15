@@ -59,8 +59,8 @@ export type Mutation = {
   createEvent?: Maybe<Event>;
   createUser: CreateUserResponse;
   deleteEvent?: Maybe<Event>;
-  deregisterEvent?: Maybe<Event>;
-  registerEvent?: Maybe<Event>;
+  registerEvent: Registration;
+  unregisterEvent: Registration;
   updateEvent?: Maybe<Event>;
   updateUser: User;
 };
@@ -76,13 +76,13 @@ export type MutationDeleteEventArgs = {
 };
 
 
-export type MutationDeregisterEventArgs = {
-  id: Scalars['String']['input'];
+export type MutationRegisterEventArgs = {
+  eventId: Scalars['String']['input'];
 };
 
 
-export type MutationRegisterEventArgs = {
-  id: Scalars['String']['input'];
+export type MutationUnregisterEventArgs = {
+  eventId: Scalars['String']['input'];
 };
 
 
@@ -98,12 +98,18 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   allEvents?: Maybe<Array<Maybe<Event>>>;
   allUsers: Array<User>;
+  checkRegistration: Scalars['Boolean']['output'];
   eventById?: Maybe<Event>;
   profile: User;
   publicProfile?: Maybe<User>;
   registration: Registration;
   registrations: Array<Registration>;
   test: Scalars['String']['output'];
+};
+
+
+export type QueryCheckRegistrationArgs = {
+  eventId: Scalars['String']['input'];
 };
 
 
@@ -118,12 +124,14 @@ export type QueryPublicProfileArgs = {
 
 
 export type QueryRegistrationArgs = {
-  input?: InputMaybe<RegistrationIdsInput>;
+  input: RegistrationIdsInput;
 };
 
 export type Registration = {
-  event: Event;
-  user: User;
+  event?: Maybe<Event>;
+  eventId: Scalars['String']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['String']['output'];
 };
 
 export type RegistrationIdsInput = {
@@ -301,8 +309,8 @@ export type MutationResolvers<ContextType = ResolverContext, ParentType extends 
   createEvent?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<MutationCreateEventArgs, 'input'>>;
   createUser?: Resolver<ResolversTypes['CreateUserResponse'], ParentType, ContextType>;
   deleteEvent?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<MutationDeleteEventArgs, 'id'>>;
-  deregisterEvent?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<MutationDeregisterEventArgs, 'id'>>;
-  registerEvent?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<MutationRegisterEventArgs, 'id'>>;
+  registerEvent?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<MutationRegisterEventArgs, 'eventId'>>;
+  unregisterEvent?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<MutationUnregisterEventArgs, 'eventId'>>;
   updateEvent?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<MutationUpdateEventArgs, 'input'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
 };
@@ -310,17 +318,20 @@ export type MutationResolvers<ContextType = ResolverContext, ParentType extends 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allEvents?: Resolver<Maybe<Array<Maybe<ResolversTypes['Event']>>>, ParentType, ContextType>;
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
+  checkRegistration?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryCheckRegistrationArgs, 'eventId'>>;
   eventById?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<QueryEventByIdArgs, 'id'>>;
   profile?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   publicProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryPublicProfileArgs, 'username'>>;
-  registration?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, Partial<QueryRegistrationArgs>>;
+  registration?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<QueryRegistrationArgs, 'input'>>;
   registrations?: Resolver<Array<ResolversTypes['Registration']>, ParentType, ContextType>;
   test?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export type RegistrationResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Registration'] = ResolversParentTypes['Registration']> = {
-  event?: Resolver<ResolversTypes['Event'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  event?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType>;
+  eventId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

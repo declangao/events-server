@@ -1,17 +1,20 @@
 export default /* GraphQL */ `
   type Query {
     registrations: [Registration!]!
-    registration(input: RegistrationIdsInput): Registration!
+    registration(input: RegistrationIdsInput!): Registration!
+    checkRegistration(eventId: String!): Boolean!
   }
 
   type Mutation {
-    registerEvent(id: String!): Event
-    deregisterEvent(id: String!): Event
+    registerEvent(eventId: String!): Registration!
+    unregisterEvent(eventId: String!): Registration!
   }
 
   type Registration {
-    event: Event!
-    user: User!
+    eventId: String!
+    userId: String!
+    event: Event
+    user: User
   }
 
   input RegistrationIdsInput {
