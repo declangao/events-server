@@ -1,13 +1,13 @@
 export default /* GraphQL */ `
   type Query {
-    profile: User!
+    myProfile: User
     publicProfile(username: String!): User
     allUsers: [User!]!
   }
 
   type Mutation {
     createUser: CreateUserResponse!
-    updateUser(input: UpdateUserInput): User!
+    updateUser(input: UpdateUserInput!): User
   }
 
   type User {
@@ -22,9 +22,9 @@ export default /* GraphQL */ `
   }
 
   input UpdateUserInput {
+    email: String!
     username: String!
-    name: String!
-    images: [ImageInput]
+    image: ImageInput
     about: String
   }
 

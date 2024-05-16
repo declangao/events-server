@@ -6,12 +6,12 @@ export default /* GraphQL */ `
   }
 
   type Image {
-    url: String!
+    url: String
     publicId: String
   }
 
   input ImageInput {
     url: String!
-    publicId: String
+    publicId: String!
   }
 `;

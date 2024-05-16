@@ -47,11 +47,11 @@ export type Event = {
 
 export type Image = {
   publicId?: Maybe<Scalars['String']['output']>;
-  url: Scalars['String']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 export type ImageInput = {
-  publicId?: InputMaybe<Scalars['String']['input']>;
+  publicId: Scalars['String']['input'];
   url: Scalars['String']['input'];
 };
 
@@ -62,7 +62,7 @@ export type Mutation = {
   registerEvent: Registration;
   unregisterEvent: Registration;
   updateEvent?: Maybe<Event>;
-  updateUser: User;
+  updateUser?: Maybe<User>;
 };
 
 
@@ -92,7 +92,7 @@ export type MutationUpdateEventArgs = {
 
 
 export type MutationUpdateUserArgs = {
-  input?: InputMaybe<UpdateUserInput>;
+  input: UpdateUserInput;
 };
 
 export type Query = {
@@ -100,7 +100,7 @@ export type Query = {
   allUsers: Array<User>;
   checkRegistration: Scalars['Boolean']['output'];
   eventById?: Maybe<Event>;
-  profile: User;
+  myProfile?: Maybe<User>;
   publicProfile?: Maybe<User>;
   registration: Registration;
   registrations: Array<Registration>;
@@ -150,8 +150,8 @@ export type UpdateEventInput = {
 
 export type UpdateUserInput = {
   about?: InputMaybe<Scalars['String']['input']>;
-  images?: InputMaybe<Array<InputMaybe<ImageInput>>>;
-  name: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  image?: InputMaybe<ImageInput>;
   username: Scalars['String']['input'];
 };
 
@@ -301,7 +301,7 @@ export type EventResolvers<ContextType = ResolverContext, ParentType extends Res
 
 export type ImageResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Image'] = ResolversParentTypes['Image']> = {
   publicId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -312,7 +312,7 @@ export type MutationResolvers<ContextType = ResolverContext, ParentType extends 
   registerEvent?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<MutationRegisterEventArgs, 'eventId'>>;
   unregisterEvent?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<MutationUnregisterEventArgs, 'eventId'>>;
   updateEvent?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<MutationUpdateEventArgs, 'input'>>;
-  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<MutationUpdateUserArgs>>;
+  updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -320,7 +320,7 @@ export type QueryResolvers<ContextType = ResolverContext, ParentType extends Res
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   checkRegistration?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryCheckRegistrationArgs, 'eventId'>>;
   eventById?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<QueryEventByIdArgs, 'id'>>;
-  profile?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  myProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   publicProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryPublicProfileArgs, 'username'>>;
   registration?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<QueryRegistrationArgs, 'input'>>;
   registrations?: Resolver<Array<ResolversTypes['Registration']>, ParentType, ContextType>;

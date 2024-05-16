@@ -8,7 +8,11 @@ import { prisma } from '@/utils/db.js';
 import { v2 as cloudinary } from 'cloudinary';
 
 const allEvents: QueryResolvers['allEvents'] = async () => {
-  const events = await prisma.event.findMany();
+  const events = await prisma.event.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
 
   return events;
 };
