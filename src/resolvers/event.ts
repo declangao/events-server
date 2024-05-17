@@ -27,6 +27,61 @@ const eventById: QueryResolvers['eventById'] = async (_parent, { id }) => {
   return event;
 };
 
+const myRegisteredEvents: QueryResolvers['myRegisteredEvents'] = async (
+  _parent,
+  _args,
+  { req }
+) => {
+  const token = await authCheck(req);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: token.email,
+    },
+  });
+  if (!user) throw new Error('User not found');
+
+  const registrations = await prisma.registration.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      event: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return registrations.map((reg) => reg.event);
+};
+
+const myCreatedEvents: QueryResolvers['myCreatedEvents'] = async (
+  _parent,
+  _args,
+  { req }
+) => {
+  const token = await authCheck(req);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: token.email,
+    },
+  });
+  if (!user) throw new Error('User not found');
+
+  const events = await prisma.event.findMany({
+    where: {
+      creatorId: user.id,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return events;
+};
+
 const createEvent: MutationResolvers['createEvent'] = async (
   _parent,
   { input },
@@ -139,6 +194,8 @@ const resolvers: Resolvers = {
   Query: {
     allEvents,
     eventById,
+    myRegisteredEvents,
+    myCreatedEvents,
   },
   Mutation: {
     createEvent,

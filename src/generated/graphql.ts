@@ -100,7 +100,9 @@ export type Query = {
   allUsers: Array<User>;
   checkRegistration: Scalars['Boolean']['output'];
   eventById?: Maybe<Event>;
+  myCreatedEvents: Array<Event>;
   myProfile?: Maybe<User>;
+  myRegisteredEvents: Array<Event>;
   publicProfile?: Maybe<User>;
   registration: Registration;
   registrations: Array<Registration>;
@@ -320,7 +322,9 @@ export type QueryResolvers<ContextType = ResolverContext, ParentType extends Res
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   checkRegistration?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryCheckRegistrationArgs, 'eventId'>>;
   eventById?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<QueryEventByIdArgs, 'id'>>;
+  myCreatedEvents?: Resolver<Array<ResolversTypes['Event']>, ParentType, ContextType>;
   myProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  myRegisteredEvents?: Resolver<Array<ResolversTypes['Event']>, ParentType, ContextType>;
   publicProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryPublicProfileArgs, 'username'>>;
   registration?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<QueryRegistrationArgs, 'input'>>;
   registrations?: Resolver<Array<ResolversTypes['Registration']>, ParentType, ContextType>;

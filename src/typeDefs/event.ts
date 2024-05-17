@@ -2,6 +2,8 @@ export default /* GraphQL */ `
   type Query {
     allEvents: [Event]
     eventById(id: String!): Event
+    myRegisteredEvents: [Event!]!
+    myCreatedEvents: [Event!]!
   }
 
   type Mutation {
