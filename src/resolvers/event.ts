@@ -7,14 +7,26 @@ import { authCheck } from '@/middlewares/auth.js';
 import { prisma } from '@/utils/db.js';
 import { v2 as cloudinary } from 'cloudinary';
 
-const allEvents: QueryResolvers['allEvents'] = async () => {
+const allEvents: QueryResolvers['allEvents'] = async (_parent, { input }) => {
+  const page = input?.page || 1;
+  const limit = input?.limit || 10;
+
   const events = await prisma.event.findMany({
+    skip: (page - 1) * limit,
+    take: limit,
     orderBy: {
       createdAt: 'desc',
     },
   });
 
-  return events;
+  const total = await prisma.event.count();
+
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  return {
+    events,
+    total,
+  };
 };
 
 const eventById: QueryResolvers['eventById'] = async (_parent, { id }) => {
@@ -29,7 +41,7 @@ const eventById: QueryResolvers['eventById'] = async (_parent, { id }) => {
 
 const myRegisteredEvents: QueryResolvers['myRegisteredEvents'] = async (
   _parent,
-  _args,
+  { input },
   { req }
 ) => {
   const token = await authCheck(req);
@@ -40,6 +52,15 @@ const myRegisteredEvents: QueryResolvers['myRegisteredEvents'] = async (
     },
   });
   if (!user) throw new Error('User not found');
+
+  const total = await prisma.registration.count({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  const page = input?.page || 1;
+  const limit = input?.limit || 10;
 
   const registrations = await prisma.registration.findMany({
     where: {
@@ -48,17 +69,24 @@ const myRegisteredEvents: QueryResolvers['myRegisteredEvents'] = async (
     include: {
       event: true,
     },
+    skip: (page - 1) * limit,
+    take: limit,
     orderBy: {
       createdAt: 'desc',
     },
   });
 
-  return registrations.map((reg) => reg.event);
+  const events = registrations.map((reg) => reg.event);
+
+  return {
+    events,
+    total,
+  };
 };
 
 const myCreatedEvents: QueryResolvers['myCreatedEvents'] = async (
   _parent,
-  _args,
+  { input },
   { req }
 ) => {
   const token = await authCheck(req);
@@ -70,16 +98,30 @@ const myCreatedEvents: QueryResolvers['myCreatedEvents'] = async (
   });
   if (!user) throw new Error('User not found');
 
+  const total = await prisma.event.count({
+    where: {
+      creatorId: user.id,
+    },
+  });
+
+  const page = input?.page || 1;
+  const limit = input?.limit || 10;
+
   const events = await prisma.event.findMany({
     where: {
       creatorId: user.id,
     },
+    skip: (page - 1) * limit,
+    take: limit,
     orderBy: {
       createdAt: 'desc',
     },
   });
 
-  return events;
+  return {
+    events,
+    total,
+  };
 };
 
 const createEvent: MutationResolvers['createEvent'] = async (

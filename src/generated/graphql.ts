@@ -45,6 +45,16 @@ export type Event = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type EventConnection = {
+  events: Array<Event>;
+  total: Scalars['Int']['output'];
+};
+
+export type EventsQueryInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type Image = {
   publicId?: Maybe<Scalars['String']['output']>;
   url?: Maybe<Scalars['String']['output']>;
@@ -96,17 +106,22 @@ export type MutationUpdateUserArgs = {
 };
 
 export type Query = {
-  allEvents?: Maybe<Array<Maybe<Event>>>;
+  allEvents?: Maybe<EventConnection>;
   allUsers: Array<User>;
   checkRegistration: Scalars['Boolean']['output'];
   eventById?: Maybe<Event>;
-  myCreatedEvents: Array<Event>;
+  myCreatedEvents?: Maybe<EventConnection>;
   myProfile?: Maybe<User>;
-  myRegisteredEvents: Array<Event>;
+  myRegisteredEvents?: Maybe<EventConnection>;
   publicProfile?: Maybe<User>;
   registration: Registration;
   registrations: Array<Registration>;
   test: Scalars['String']['output'];
+};
+
+
+export type QueryAllEventsArgs = {
+  input?: InputMaybe<EventsQueryInput>;
 };
 
 
@@ -117,6 +132,16 @@ export type QueryCheckRegistrationArgs = {
 
 export type QueryEventByIdArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryMyCreatedEventsArgs = {
+  input?: InputMaybe<EventsQueryInput>;
+};
+
+
+export type QueryMyRegisteredEventsArgs = {
+  input?: InputMaybe<EventsQueryInput>;
 };
 
 
@@ -243,9 +268,12 @@ export type ResolversTypes = {
   CreateUserResponse: ResolverTypeWrapper<CreateUserResponse>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   Event: ResolverTypeWrapper<Event>;
+  EventConnection: ResolverTypeWrapper<EventConnection>;
+  EventsQueryInput: EventsQueryInput;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Image: ResolverTypeWrapper<Image>;
   ImageInput: ImageInput;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Registration: ResolverTypeWrapper<Registration>;
@@ -263,9 +291,12 @@ export type ResolversParentTypes = {
   CreateUserResponse: CreateUserResponse;
   DateTime: Scalars['DateTime']['output'];
   Event: Event;
+  EventConnection: EventConnection;
+  EventsQueryInput: EventsQueryInput;
   ID: Scalars['ID']['output'];
   Image: Image;
   ImageInput: ImageInput;
+  Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
   Registration: Registration;
@@ -301,6 +332,12 @@ export type EventResolvers<ContextType = ResolverContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type EventConnectionResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['EventConnection'] = ResolversParentTypes['EventConnection']> = {
+  events?: Resolver<Array<ResolversTypes['Event']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ImageResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Image'] = ResolversParentTypes['Image']> = {
   publicId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -318,13 +355,13 @@ export type MutationResolvers<ContextType = ResolverContext, ParentType extends 
 };
 
 export type QueryResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  allEvents?: Resolver<Maybe<Array<Maybe<ResolversTypes['Event']>>>, ParentType, ContextType>;
+  allEvents?: Resolver<Maybe<ResolversTypes['EventConnection']>, ParentType, ContextType, Partial<QueryAllEventsArgs>>;
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   checkRegistration?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryCheckRegistrationArgs, 'eventId'>>;
   eventById?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType, RequireFields<QueryEventByIdArgs, 'id'>>;
-  myCreatedEvents?: Resolver<Array<ResolversTypes['Event']>, ParentType, ContextType>;
+  myCreatedEvents?: Resolver<Maybe<ResolversTypes['EventConnection']>, ParentType, ContextType, Partial<QueryMyCreatedEventsArgs>>;
   myProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  myRegisteredEvents?: Resolver<Array<ResolversTypes['Event']>, ParentType, ContextType>;
+  myRegisteredEvents?: Resolver<Maybe<ResolversTypes['EventConnection']>, ParentType, ContextType, Partial<QueryMyRegisteredEventsArgs>>;
   publicProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryPublicProfileArgs, 'username'>>;
   registration?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<QueryRegistrationArgs, 'input'>>;
   registrations?: Resolver<Array<ResolversTypes['Registration']>, ParentType, ContextType>;
@@ -354,6 +391,7 @@ export type Resolvers<ContextType = ResolverContext> = {
   CreateUserResponse?: CreateUserResponseResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Event?: EventResolvers<ContextType>;
+  EventConnection?: EventConnectionResolvers<ContextType>;
   Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

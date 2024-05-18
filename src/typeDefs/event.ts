@@ -1,9 +1,9 @@
 export default /* GraphQL */ `
   type Query {
-    allEvents: [Event]
+    allEvents(input: EventsQueryInput): EventConnection
     eventById(id: String!): Event
-    myRegisteredEvents: [Event!]!
-    myCreatedEvents: [Event!]!
+    myRegisteredEvents(input: EventsQueryInput): EventConnection
+    myCreatedEvents(input: EventsQueryInput): EventConnection
   }
 
   type Mutation {
@@ -41,5 +41,15 @@ export default /* GraphQL */ `
     location: String!
     datetime: DateTime!
     images: [ImageInput]
+  }
+
+  input EventsQueryInput {
+    page: Int
+    limit: Int
+  }
+
+  type EventConnection {
+    events: [Event!]!
+    total: Int!
   }
 `;
