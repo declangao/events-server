@@ -23,6 +23,9 @@ model Event {
   description String
   location    String
   datetime    DateTime
+  lat         Float    @default(0)
+  lng         Float    @default(0)
+  address     String   @default("")
 
   /// [Images]
   images Json[] @default([])

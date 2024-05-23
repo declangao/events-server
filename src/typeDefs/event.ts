@@ -23,6 +23,9 @@ export default /* GraphQL */ `
     updatedAt: DateTime!
     creatorId: String!
     creator: User
+    lat: Float!
+    lng: Float!
+    address: String!
     # attendees: [User!]!
   }
 
@@ -32,6 +35,9 @@ export default /* GraphQL */ `
     location: String!
     datetime: DateTime!
     images: [ImageInput]
+    lat: Float!
+    lng: Float!
+    address: String!
   }
 
   input UpdateEventInput {
@@ -41,6 +47,9 @@ export default /* GraphQL */ `
     location: String!
     datetime: DateTime!
     images: [ImageInput]
+    lat: Float!
+    lng: Float!
+    address: String!
   }
 
   input EventsQueryInput {

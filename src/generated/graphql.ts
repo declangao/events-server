@@ -19,9 +19,12 @@ export type Scalars = {
 };
 
 export type CreateEventInput = {
+  address: Scalars['String']['input'];
   datetime: Scalars['DateTime']['input'];
   description: Scalars['String']['input'];
   images?: InputMaybe<Array<InputMaybe<ImageInput>>>;
+  lat: Scalars['Float']['input'];
+  lng: Scalars['Float']['input'];
   location: Scalars['String']['input'];
   name: Scalars['String']['input'];
 };
@@ -40,6 +43,8 @@ export type Event = {
   description: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   images: Array<Image>;
+  lat: Scalars['Float']['output'];
+  lng: Scalars['Float']['output'];
   location: Scalars['String']['output'];
   name: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
@@ -167,10 +172,13 @@ export type RegistrationIdsInput = {
 };
 
 export type UpdateEventInput = {
+  address: Scalars['String']['input'];
   datetime: Scalars['DateTime']['input'];
   description: Scalars['String']['input'];
   id: Scalars['String']['input'];
   images?: InputMaybe<Array<InputMaybe<ImageInput>>>;
+  lat: Scalars['Float']['input'];
+  lng: Scalars['Float']['input'];
   location: Scalars['String']['input'];
   name: Scalars['String']['input'];
 };
@@ -270,6 +278,7 @@ export type ResolversTypes = {
   Event: ResolverTypeWrapper<Event>;
   EventConnection: ResolverTypeWrapper<EventConnection>;
   EventsQueryInput: EventsQueryInput;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Image: ResolverTypeWrapper<Image>;
   ImageInput: ImageInput;
@@ -293,6 +302,7 @@ export type ResolversParentTypes = {
   Event: Event;
   EventConnection: EventConnection;
   EventsQueryInput: EventsQueryInput;
+  Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Image: Image;
   ImageInput: ImageInput;
@@ -326,6 +336,8 @@ export type EventResolvers<ContextType = ResolverContext, ParentType extends Res
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  lng?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   location?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
