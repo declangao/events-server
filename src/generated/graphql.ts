@@ -36,6 +36,7 @@ export type CreateUserResponse = {
 };
 
 export type Event = {
+  address: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   creator?: Maybe<User>;
   creatorId: Scalars['String']['output'];
@@ -121,6 +122,7 @@ export type Query = {
   publicProfile?: Maybe<User>;
   registration: Registration;
   registrations: Array<Registration>;
+  searchEvents?: Maybe<EventConnection>;
   test: Scalars['String']['output'];
 };
 
@@ -159,6 +161,11 @@ export type QueryRegistrationArgs = {
   input: RegistrationIdsInput;
 };
 
+
+export type QuerySearchEventsArgs = {
+  input: SearchEventsQueryInput;
+};
+
 export type Registration = {
   event?: Maybe<Event>;
   eventId: Scalars['String']['output'];
@@ -169,6 +176,12 @@ export type Registration = {
 export type RegistrationIdsInput = {
   eventId: Scalars['String']['input'];
   userId: Scalars['String']['input'];
+};
+
+export type SearchEventsQueryInput = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  query: Scalars['String']['input'];
 };
 
 export type UpdateEventInput = {
@@ -287,6 +300,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Registration: ResolverTypeWrapper<Registration>;
   RegistrationIdsInput: RegistrationIdsInput;
+  SearchEventsQueryInput: SearchEventsQueryInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateEventInput: UpdateEventInput;
   UpdateUserInput: UpdateUserInput;
@@ -311,6 +325,7 @@ export type ResolversParentTypes = {
   Query: {};
   Registration: Registration;
   RegistrationIdsInput: RegistrationIdsInput;
+  SearchEventsQueryInput: SearchEventsQueryInput;
   String: Scalars['String']['output'];
   UpdateEventInput: UpdateEventInput;
   UpdateUserInput: UpdateUserInput;
@@ -329,6 +344,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 }
 
 export type EventResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Event'] = ResolversParentTypes['Event']> = {
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   creator?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   creatorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -377,6 +393,7 @@ export type QueryResolvers<ContextType = ResolverContext, ParentType extends Res
   publicProfile?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryPublicProfileArgs, 'username'>>;
   registration?: Resolver<ResolversTypes['Registration'], ParentType, ContextType, RequireFields<QueryRegistrationArgs, 'input'>>;
   registrations?: Resolver<Array<ResolversTypes['Registration']>, ParentType, ContextType>;
+  searchEvents?: Resolver<Maybe<ResolversTypes['EventConnection']>, ParentType, ContextType, RequireFields<QuerySearchEventsArgs, 'input'>>;
   test?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 

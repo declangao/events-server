@@ -124,6 +124,42 @@ const myCreatedEvents: QueryResolvers['myCreatedEvents'] = async (
   };
 };
 
+const searchEvents: QueryResolvers['searchEvents'] = async (
+  _parent,
+  { input }
+) => {
+  const total = await prisma.event.count({
+    where: {
+      name: {
+        contains: input.query,
+        mode: 'insensitive',
+      },
+    },
+  });
+
+  const page = input?.page || 1;
+  const limit = input?.limit || 10;
+
+  const events = await prisma.event.findMany({
+    where: {
+      name: {
+        contains: input.query,
+        mode: 'insensitive',
+      },
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return {
+    events,
+    total,
+  };
+};
+
 const createEvent: MutationResolvers['createEvent'] = async (
   _parent,
   { input },
@@ -238,6 +274,7 @@ const resolvers: Resolvers = {
     eventById,
     myRegisteredEvents,
     myCreatedEvents,
+    searchEvents,
   },
   Mutation: {
     createEvent,

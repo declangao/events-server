@@ -4,6 +4,7 @@ export default /* GraphQL */ `
     eventById(id: String!): Event
     myRegisteredEvents(input: EventsQueryInput): EventConnection
     myCreatedEvents(input: EventsQueryInput): EventConnection
+    searchEvents(input: SearchEventsQueryInput!): EventConnection
   }
 
   type Mutation {
@@ -53,6 +54,12 @@ export default /* GraphQL */ `
   }
 
   input EventsQueryInput {
+    page: Int
+    limit: Int
+  }
+
+  input SearchEventsQueryInput {
+    query: String!
     page: Int
     limit: Int
   }
