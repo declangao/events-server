@@ -37,6 +37,7 @@ export type CreateUserResponse = {
 
 export type Event = {
   address: Scalars['String']['output'];
+  attendees?: Maybe<Array<User>>;
   createdAt: Scalars['DateTime']['output'];
   creator?: Maybe<User>;
   creatorId: Scalars['String']['output'];
@@ -345,6 +346,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 
 export type EventResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Event'] = ResolversParentTypes['Event']> = {
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  attendees?: Resolver<Maybe<Array<ResolversTypes['User']>>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   creator?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   creatorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

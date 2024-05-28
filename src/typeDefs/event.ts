@@ -27,7 +27,7 @@ export default /* GraphQL */ `
     lat: Float!
     lng: Float!
     address: String!
-    # attendees: [User!]!
+    attendees: [User!]
   }
 
   input CreateEventInput {

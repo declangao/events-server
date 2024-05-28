@@ -290,6 +290,18 @@ const resolvers: Resolvers = {
       });
       return user!;
     },
+    attendees: async (event) => {
+      const registrations = await prisma.registration.findMany({
+        where: {
+          eventId: event.id,
+        },
+        include: {
+          user: true,
+        },
+      });
+
+      return registrations.map((registration) => registration.user);
+    },
   },
 };
 
