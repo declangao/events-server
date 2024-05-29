@@ -58,7 +58,9 @@ export type EventConnection = {
 };
 
 export type EventsQueryInput = {
+  lat?: InputMaybe<Scalars['Float']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+  lng?: InputMaybe<Scalars['Float']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
 };
 

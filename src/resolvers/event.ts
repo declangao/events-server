@@ -1,4 +1,5 @@
 import {
+  Event,
   MutationResolvers,
   QueryResolvers,
   Resolvers,
@@ -11,13 +12,30 @@ const allEvents: QueryResolvers['allEvents'] = async (_parent, { input }) => {
   const page = input?.page || 1;
   const limit = input?.limit || 10;
 
-  const events = await prisma.event.findMany({
-    skip: (page - 1) * limit,
-    take: limit,
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  let events: Event[] = [];
+
+  if (input?.lat && input?.lng) {
+    events = await prisma.$queryRaw`
+      select * from (
+      SELECT  *,( 3959 * acos( cos( radians(${
+        input.lat
+      }) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(${
+      input.lng
+    }) ) + sin( radians(${input.lat}) ) * sin( radians( lat ) ) ) ) AS distance 
+      FROM "Event"
+      ) al
+      ORDER BY distance
+      LIMIT ${limit} OFFSET ${(page - 1) * limit}
+    `;
+  } else {
+    events = await prisma.event.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 
   const total = await prisma.event.count();
 

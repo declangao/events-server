@@ -56,6 +56,8 @@ export default /* GraphQL */ `
   input EventsQueryInput {
     page: Int
     limit: Int
+    lat: Float
+    lng: Float
   }
 
   input SearchEventsQueryInput {
