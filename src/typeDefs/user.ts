@@ -18,7 +18,7 @@ export default /* GraphQL */ `
     about: String
     createdAt: DateTime!
     updatedAt: DateTime!
-    # createdEvents: [Event!]!
+    createdEvents: [Event!]
   }
 
   input UpdateUserInput {

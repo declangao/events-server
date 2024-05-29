@@ -207,6 +207,7 @@ export type UpdateUserInput = {
 export type User = {
   about?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
+  createdEvents?: Maybe<Array<Event>>;
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   image?: Maybe<Image>;
@@ -410,6 +411,7 @@ export type RegistrationResolvers<ContextType = ResolverContext, ParentType exte
 export type UserResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   about?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  createdEvents?: Resolver<Maybe<Array<ResolversTypes['Event']>>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes['Image']>, ParentType, ContextType>;

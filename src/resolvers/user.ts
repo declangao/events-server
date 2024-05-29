@@ -59,6 +59,23 @@ const myProfile: QueryResolvers['myProfile'] = async (
   return user;
 };
 
+const publicProfile: QueryResolvers['publicProfile'] = async (
+  _parent,
+  { username }
+) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  return user;
+};
+
 const updateUser: MutationResolvers['updateUser'] = async (
   _parent,
   { input },
@@ -97,10 +114,23 @@ const resolvers: Resolvers = {
   Query: {
     allUsers,
     myProfile,
+    publicProfile,
   },
   Mutation: {
     createUser,
     updateUser,
+  },
+  User: {
+    createdEvents: (parent) => {
+      return prisma.event.findMany({
+        where: {
+          creatorId: parent.id,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+    },
   },
 };
 
