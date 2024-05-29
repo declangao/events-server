@@ -15,9 +15,10 @@ const allEvents: QueryResolvers['allEvents'] = async (_parent, { input }) => {
   let events: Event[] = [];
 
   if (input?.lat && input?.lng) {
+    // https://stackoverflow.com/questions/37827468/find-the-nearest-location-by-latitude-and-longitude-in-postgresql
     events = await prisma.$queryRaw`
-      select * from (
-      SELECT  *,( 3959 * acos( cos( radians(${
+      SELECT * FROM (
+      SELECT  *, ( 3959 * acos( cos( radians(${
         input.lat
       }) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(${
       input.lng
