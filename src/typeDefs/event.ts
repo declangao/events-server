@@ -19,6 +19,7 @@ export default /* GraphQL */ `
     description: String!
     location: String!
     datetime: DateTime!
+    category: String!
     images: [Image!]!
     createdAt: DateTime!
     updatedAt: DateTime!
@@ -35,6 +36,7 @@ export default /* GraphQL */ `
     description: String!
     location: String!
     datetime: DateTime!
+    category: String!
     images: [ImageInput]
     lat: Float!
     lng: Float!
@@ -47,6 +49,7 @@ export default /* GraphQL */ `
     description: String!
     location: String!
     datetime: DateTime!
+    category: String!
     images: [ImageInput]
     lat: Float!
     lng: Float!

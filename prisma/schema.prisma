@@ -26,6 +26,7 @@ model Event {
   lat         Float    @default(0)
   lng         Float    @default(0)
   address     String   @default("")
+  category    String   @default("Other")
 
   /// [Images]
   images Json[] @default([])
