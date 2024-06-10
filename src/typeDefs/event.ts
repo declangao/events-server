@@ -61,6 +61,7 @@ export default /* GraphQL */ `
     limit: Int
     lat: Float
     lng: Float
+    category: String
   }
 
   input SearchEventsQueryInput {

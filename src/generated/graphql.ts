@@ -20,6 +20,7 @@ export type Scalars = {
 
 export type CreateEventInput = {
   address: Scalars['String']['input'];
+  category: Scalars['String']['input'];
   datetime: Scalars['DateTime']['input'];
   description: Scalars['String']['input'];
   images?: InputMaybe<Array<InputMaybe<ImageInput>>>;
@@ -38,6 +39,7 @@ export type CreateUserResponse = {
 export type Event = {
   address: Scalars['String']['output'];
   attendees?: Maybe<Array<User>>;
+  category: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   creator?: Maybe<User>;
   creatorId: Scalars['String']['output'];
@@ -58,6 +60,7 @@ export type EventConnection = {
 };
 
 export type EventsQueryInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
   lat?: InputMaybe<Scalars['Float']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   lng?: InputMaybe<Scalars['Float']['input']>;
@@ -189,6 +192,7 @@ export type SearchEventsQueryInput = {
 
 export type UpdateEventInput = {
   address: Scalars['String']['input'];
+  category: Scalars['String']['input'];
   datetime: Scalars['DateTime']['input'];
   description: Scalars['String']['input'];
   id: Scalars['String']['input'];
@@ -350,6 +354,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type EventResolvers<ContextType = ResolverContext, ParentType extends ResolversParentTypes['Event'] = ResolversParentTypes['Event']> = {
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   attendees?: Resolver<Maybe<Array<ResolversTypes['User']>>, ParentType, ContextType>;
+  category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   creator?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   creatorId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

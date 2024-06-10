@@ -12,22 +12,49 @@ const allEvents: QueryResolvers['allEvents'] = async (_parent, { input }) => {
   const page = input?.page || 1;
   const limit = input?.limit || 10;
 
+  const where: { category?: string } = {};
+  if (input?.category) {
+    where.category = input.category;
+  }
+
   let events: Event[] = [];
 
   if (input?.lat && input?.lng) {
     // https://stackoverflow.com/questions/37827468/find-the-nearest-location-by-latitude-and-longitude-in-postgresql
-    events = await prisma.$queryRaw`
+    if (where.category) {
+      events = await prisma.$queryRaw`
       SELECT * FROM (
       SELECT  *, ( 3959 * acos( cos( radians(${
         input.lat
       }) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(${
-      input.lng
-    }) ) + sin( radians(${input.lat}) ) * sin( radians( lat ) ) ) ) AS distance 
+        input.lng
+      }) ) + sin( radians(${
+        input.lat
+      }) ) * sin( radians( lat ) ) ) ) AS distance 
+      FROM "Event"
+      WHERE category = ${where.category}
+      ) al
+      ORDER BY distance
+      LIMIT ${limit} 
+      OFFSET ${(page - 1) * limit}
+    `;
+    } else {
+      events = await prisma.$queryRaw`
+      SELECT * FROM (
+      SELECT  *, ( 3959 * acos( cos( radians(${
+        input.lat
+      }) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(${
+        input.lng
+      }) ) + sin( radians(${
+        input.lat
+      }) ) * sin( radians( lat ) ) ) ) AS distance 
       FROM "Event"
       ) al
       ORDER BY distance
-      LIMIT ${limit} OFFSET ${(page - 1) * limit}
+      LIMIT ${limit} 
+      OFFSET ${(page - 1) * limit}
     `;
+    }
   } else {
     events = await prisma.event.findMany({
       skip: (page - 1) * limit,
@@ -35,10 +62,13 @@ const allEvents: QueryResolvers['allEvents'] = async (_parent, { input }) => {
       orderBy: {
         createdAt: 'desc',
       },
+      where,
     });
   }
 
-  const total = await prisma.event.count();
+  const total = await prisma.event.count({
+    where,
+  });
 
   // await new Promise((resolve) => setTimeout(resolve, 1000));
 
